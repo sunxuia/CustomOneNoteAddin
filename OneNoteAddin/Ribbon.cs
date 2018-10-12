@@ -13,7 +13,7 @@ using OneNote = Microsoft.Office.Interop.OneNote;
 namespace OneNoteAddin
 {
     [Guid("7C5FA097-B7EF-4B5B-93D0-8F5C71070876"), ProgId("OneNoteAddin")]
-    public class Ribbon : IDTExtensibility2, IRibbonExtensibility
+    public partial class Ribbon : IDTExtensibility2, IRibbonExtensibility
     {
         private OneNote.Application app;
         
@@ -71,11 +71,6 @@ namespace OneNoteAddin
                 Properties.Resources.DefaultImage.Save(imageStream, ImageFormat.Png);
             }
             return new CCOMStreamWrapper(imageStream);
-        }
-
-        public void ShowHello(IRibbonControl control)
-        {
-            MessageBox.Show("hello world");
         }
     }
 }
