@@ -240,3 +240,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/RibbonDesign/Ribbon1.xml
+/RibbonDesign/Ribbon1.cs

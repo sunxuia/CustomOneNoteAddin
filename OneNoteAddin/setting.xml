@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+  <codeStyles>
+    <codeStyle>None</codeStyle>
+    <codeStyle>C#</codeStyle>
+    <codeStyle>C++</codeStyle>
+    <codeStyle>CSS</codeStyle>
+    <codeStyle>HTML</codeStyle>
+    <codeStyle>Java</codeStyle>
+    <codeStyle>JavaScript</codeStyle>
+    <codeStyle>JSON</codeStyle>
+    <codeStyle>Python</codeStyle>
+    <codeStyle>SQL</codeStyle>
+    <codeStyle>TypeScript</codeStyle>
+    <codeStyle>XML</codeStyle>
+    <codeStyle>YAML</codeStyle>
+  </codeStyles>
+  <defaultValues>
+    <defaultValue id="cmbFont1" value="Microsoft YaHei Mono"></defaultValue>
+    <defaultValue id="cmbFont2" value="Consolas"></defaultValue>
+    <defaultValue id="cmbFont3" value="微软雅黑 Light"></defaultValue>
+  </defaultValues>
+  <tables>
+    <table label="Blue Title Table" size="large" row="2" column="2" foreColor="ffffff" backColor="2e75b5" headInLeft="true" />
+  </tables>
+</setting>

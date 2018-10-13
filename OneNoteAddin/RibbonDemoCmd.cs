@@ -5,6 +5,9 @@ using System.Threading;
 using System.Windows.Forms;
 namespace OneNoteAddin
 {
+    /// <summary>
+    /// demo api command of ribbon
+    /// </summary>
     public partial class Ribbon : IDTExtensibility2, IRibbonExtensibility
     {
         private ShowForm showForm = new ShowForm();

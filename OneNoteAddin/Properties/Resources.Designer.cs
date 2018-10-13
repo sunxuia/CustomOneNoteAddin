@@ -19,7 +19,7 @@ namespace OneNoteAddin.Properties {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -47,7 +47,7 @@ namespace OneNoteAddin.Properties {
         }
         
         /// <summary>
-        ///   使用此强类型资源类，为所有资源查找
+        ///   重写当前线程的 CurrentUICulture 属性
         ///   重写当前线程的 CurrentUICulture 属性。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -63,6 +63,26 @@ namespace OneNoteAddin.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Ctrl {
+            get {
+                object obj = ResourceManager.GetObject("Ctrl", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Debug {
+            get {
+                object obj = ResourceManager.GetObject("Debug", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap DefaultImage {
             get {
                 object obj = ResourceManager.GetObject("DefaultImage", resourceCulture);
@@ -71,11 +91,52 @@ namespace OneNoteAddin.Properties {
         }
         
         /// <summary>
-        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;        ///&lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2006/01/customui&quot; loadImage=&quot;GetImage&quot;&gt;        ///  &lt;ribbon&gt;        ///    &lt;tabs&gt;        ///      &lt;tab id=&quot;tabAddin&quot; label=&quot;Addin&quot;&gt;        ///        &lt;group id=&quot;groupHello&quot; label=&quot;Hello&quot;&gt;        ///          &lt;button id=&quot;btnHello&quot; label=&quot;Hello World&quot; size=&quot;large&quot; onAction=&quot;ShowHello&quot; /&gt;        ///        &lt;/group&gt;        ///      &lt;/tab&gt;        ///    &lt;/tabs&gt;        ///  &lt;/ribbon&gt;        ///&lt;/customUI&gt;        /// 的本地化字符串。
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static string Ribbon {
+        internal static System.Drawing.Bitmap Html {
             get {
-                return ResourceManager.GetString("Ribbon", resourceCulture);
+                object obj = ResourceManager.GetObject("Html", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap InsertComment {
+            get {
+                object obj = ResourceManager.GetObject("InsertComment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap TextCursor {
+            get {
+                object obj = ResourceManager.GetObject("TextCursor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap VSCode {
+            get {
+                object obj = ResourceManager.GetObject("VSCode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Word {
+            get {
+                object obj = ResourceManager.GetObject("Word", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
