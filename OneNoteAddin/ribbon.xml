@@ -13,44 +13,38 @@
         </group>
         <group id="grpStyle" label="Style">
           <box id="box4" boxStyle="vertical">
-            <comboBox id="cmbStyle" imageMso="CodeEdit" label="Code" showLabel="false" getText="GetText" onChange="onTextChange">
+            <comboBox id="cmbStyle" imageMso="CodeEdit" label="Code" showLabel="false" getText="GetText" onChange="OnTextChange">
             </comboBox>
-            <button id="btnInsertCode" imageMso="HtmlListCodeSnippets" label="Insert Code" onAction="onButtonClick" />
-            <button id="btnInsertComment" label="Insert Comment" image="InsertComment" onAction="onButtonClick" />
+            <button id="btnInsertCode" imageMso="HtmlListCodeSnippets" label="Insert Code" onAction="OnInsertCode" />
+            <button id="btnInsertComment" label="Insert Comment" image="InsertComment" onAction="OnInsertComment" />
           </box>
-          <button id="btnOpenInVSCode" label="Open in VS Code" size="large" image="VSCode" onAction="onButtonClick" />
-          <button id="btnCopyWithWord" imageMso="FileSaveAsWord97_2003" label="Copy With Word" size="large" onAction="onButtonClick" />
+          <button id="btnOpenInVSCode" label="Edit in VS Code" size="large" image="VSCode" onAction="OnOpenInVSCode" />
+          <button id="btnCopyWithWord" imageMso="FileSaveAsWord97_2003" label="Paste With Word" size="large" onAction="OnPasteWithWord" />
         </group>
         <group id="grpFont" label="Font">
           <box id="box1">
-            <comboBox id="cmbFont1" imageMso="FontColorGallery" label="Font" getText="GetText" onChange="onTextChange" />
-            <button id="btnSetFont1Cursor" label="Cursor" showImage="false" onAction="onButtonClick" />
-            <labelControl id="lbl1" label="|" />
-            <button id="btnSetFont1CtrlA" label="Ctrl + A" showImage="false" onAction="onButtonClick" />
-            <labelControl id="lbl2" label="|" />
-            <button id="btnSetFont1Page" label="Full Page" showImage="false" onAction="onButtonClick" />
+            <comboBox id="cmbFont1" imageMso="FontColorGallery" label="Font" getText="GetText" onChange="OnTextChange" />
+            <button id="btnSetFont1Selection" label="Selection" showImage="false" onAction="OnSetFontClick" />
+            <labelControl id="lbl3" label="|" />
+            <button id="btnSetFont1Page" label="Full Page" showImage="false" onAction="OnSetFontClick" />
           </box>
           <box id="box2">
-            <comboBox id="cmbFont2" imageMso="FontColorGallery" label="Font" getText="GetText" onChange="onTextChange" />
-            <button id="btnSetFont2Cursor" label="Cursor" showImage="false" onAction="onButtonClick" />
-            <labelControl id="lbl3" label="|" />
-            <button id="btnSetFont2CtrlA" label="Ctrl + A" showImage="false" onAction="onButtonClick" />
-            <labelControl id="lbl4" label="|" />
-            <button id="btnSetFont2Page" label="Full Page" showImage="false" onAction="onButtonClick" />
+            <comboBox id="cmbFont2" imageMso="FontColorGallery" label="Font" getText="GetText" onChange="OnTextChange" />
+            <button id="btnSetFont2Selection" label="Selection" showImage="false" onAction="OnSetFontClick" />
+            <labelControl id="lbl5" label="|" />
+            <button id="btnSetFont2Page" label="Full Page" showImage="false" onAction="OnSetFontClick" />
           </box>
           <box id="box3">
-            <comboBox id="cmbFont3" imageMso="FontColorGallery" label="Font" getText="GetText" onChange="onTextChange" />
-            <button id="btnSetFont3Cursor" label="Cursor" showImage="false" onAction="onButtonClick" />
-            <labelControl id="lbl5" label="|" />
-            <button id="btnSetFont3CtrlA" label="Ctrl + A" showImage="false" onAction="onButtonClick" />
-            <labelControl id="lbl6" label="|" />
-            <button id="btnSetFont3Page" label="Full Page" showImage="false" onAction="onButtonClick" />
+            <comboBox id="cmbFont3" imageMso="FontColorGallery" label="Font" getText="GetText" onChange="OnTextChange" />
+            <button id="btnSetFont3Selection" label="Selection" showImage="false" onAction="OnSetFontClick" />
+            <labelControl id="lbl7" label="|" />
+            <button id="btnSetFont3Page" label="Full Page" showImage="false" onAction="OnSetFontClick" />
           </box>
         </group>
         <group id="grpTable" label="Insert Table">
         </group>
         <group id="grpSetting" label="Setting">
-          <button id="btnOpenSettingFile" imageMso="CurrentViewSettings" label="Open Setting File" size="large" onAction="OpenXmlFile" />
+          <button id="btnOpenSettingFile" imageMso="CurrentViewSettings" label="Open Setting File" size="large" onAction="OnOpenSettingFileClick" />
         </group>
       </tab>
     </tabs>

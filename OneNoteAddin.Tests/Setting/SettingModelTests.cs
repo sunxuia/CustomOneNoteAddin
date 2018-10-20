@@ -18,7 +18,7 @@ namespace OneNoteAddin.Tests
             string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <setting>
   <codeStyles>
-    <codeStyle>None</codeStyle>
+    <codeStyle label=""None"" comment=""""></codeStyle>
   </codeStyles>
   <defaultValues>
     <defaultValue id=""cmbFont1"" value=""Microsoft YaHei Mono""></defaultValue>
@@ -26,6 +26,7 @@ namespace OneNoteAddin.Tests
   <tables>
     <table label=""Blue Title Table"" size=""large"" row=""2"" column=""2"" foreColor=""ffffff"" backColor=""2e75b5"" headInLeft=""true"" />
   </tables>
+  <vsCode>E:\ToolsDevelop\Microsoft VS Code\Code.exe</vsCode>
 </setting>
 ";
             File.WriteAllText(path, xml, Encoding.UTF8);
@@ -35,7 +36,8 @@ namespace OneNoteAddin.Tests
             Assert.AreEqual(path, setting.FilePath);
 
             Assert.AreEqual(1, setting.CodeStyles.Count);
-            Assert.AreEqual("None", setting.CodeStyles[0]);
+            Assert.AreEqual("None", setting.CodeStyles[0].Label);
+            Assert.AreEqual("", setting.CodeStyles[0].Comment);
 
             Assert.AreEqual(1, setting.DefaultValues.Count);
             Assert.AreEqual("cmbFont1", setting.DefaultValues[0].Id);
@@ -49,6 +51,8 @@ namespace OneNoteAddin.Tests
             Assert.AreEqual("ffffff", setting.Tables[0].ForeColor);
             Assert.AreEqual("2e75b5", setting.Tables[0].BackColor);
             Assert.AreEqual(true, setting.Tables[0].HeadInLeft);
+
+            Assert.AreEqual(@"E:\ToolsDevelop\Microsoft VS Code\Code.exe", setting.VSCode);
         }
 
         [TestMethod]
@@ -56,16 +60,16 @@ namespace OneNoteAddin.Tests
         {
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase.Substring(8)), "setting.xml");
             string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<setting>
-  <codeStyles />
-  <defaultValues />
-  <tables />
-</setting>
+<setting />
 ";
             File.WriteAllText(path, xml, Encoding.UTF8);
             SettingModel setting = new SettingModel(path);
 
-            setting.CodeStyles.Add("None");
+            setting.CodeStyles.Add(new CodeStyleModel()
+            {
+                Label = "None",
+                Comment = ""
+            });
             setting.DefaultValues.Add(new DefaultValueModel()
             {
                 Id = "cmbFont1",
@@ -81,11 +85,14 @@ namespace OneNoteAddin.Tests
                 BackColor = "2e75b5",
                 HeadInLeft = true
             });
+            setting.VSCode = @"E:\ToolsDevelop\Microsoft VS Code\Code.exe";
+
             setting.WriteXml();
 
             SettingModel saved = new SettingModel(path);
             Assert.AreEqual(setting.CodeStyles.Count, saved.CodeStyles.Count);
-            Assert.AreEqual(setting.CodeStyles[0], saved.CodeStyles[0]);
+            Assert.AreEqual(setting.CodeStyles[0].Label, saved.CodeStyles[0].Label);
+            Assert.AreEqual(setting.CodeStyles[0].Comment, saved.CodeStyles[0].Comment);
 
             Assert.AreEqual(setting.DefaultValues.Count, saved.DefaultValues.Count);
             Assert.AreEqual(setting.DefaultValues[0].Id, saved.DefaultValues[0].Id);
@@ -99,6 +106,8 @@ namespace OneNoteAddin.Tests
             Assert.AreEqual(setting.Tables[0].ForeColor, saved.Tables[0].ForeColor);
             Assert.AreEqual(setting.Tables[0].BackColor, saved.Tables[0].BackColor);
             Assert.AreEqual(setting.Tables[0].HeadInLeft, saved.Tables[0].HeadInLeft);
+
+            Assert.AreEqual(setting.VSCode, saved.VSCode);
         }
     }
 }

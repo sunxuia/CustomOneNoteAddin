@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_2FA39AE6ACDFA2AA91BFE34614AD45DE"
+        "OwnerKey" = "8:_8CE3664D5F03439EA64E6EAD98E82508"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8CE3664D5F03439EA64E6EAD98E82508"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -27,7 +33,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EAD26BA045E4ADAB7915BDD3F5835978"
+        "MsmKey" = "8:_FA32CFBF47A3DF16D06058FCA8EEBB80"
         "OwnerKey" = "8:_8CE3664D5F03439EA64E6EAD98E82508"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -40,7 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EAD26BA045E4ADAB7915BDD3F5835978"
+        "OwnerKey" = "8:_2FA39AE6ACDFA2AA91BFE34614AD45DE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FA32CFBF47A3DF16D06058FCA8EEBB80"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -100,6 +112,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
             }
         }
     }
@@ -130,6 +150,37 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2FA39AE6ACDFA2AA91BFE34614AD45DE"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Interop.Microsoft.Office.Interop.OneNote, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2FA39AE6ACDFA2AA91BFE34614AD45DE"
+                    {
+                    "Name" = "8:Interop.Microsoft.Office.Interop.OneNote.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Interop.Microsoft.Office.Interop.OneNote.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_62665499F3C8403AB89718F253982CF6"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_96F9061862CB1260AD892ACC23964893"
             {
             "SourcePath" = "8:OneNoteAddin.tlb"
@@ -150,14 +201,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EAD26BA045E4ADAB7915BDD3F5835978"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FA32CFBF47A3DF16D06058FCA8EEBB80"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_EAD26BA045E4ADAB7915BDD3F5835978"
+                    "_FA32CFBF47A3DF16D06058FCA8EEBB80"
                     {
                     "Name" = "8:System.Net.Http.dll"
                     "Attributes" = "3:512"
@@ -237,19 +288,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OneNoteAddin"
-        "ProductCode" = "8:{1DEACADD-487D-4700-B229-75A2A1209DC7}"
-        "PackageCode" = "8:{F33D3EE7-A128-480E-AD97-0FDC90A1716B}"
+        "ProductCode" = "8:{58E884B6-9B66-4F03-B214-D245E78643A1}"
+        "PackageCode" = "8:{6A7EFC43-B97D-4948-82FA-D1D94E7785A2}"
         "UpgradeCode" = "8:{1BD6D205-93F3-41D9-AD18-C4B2AEA934AF}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.9.0"
         "Manufacturer" = "8:PresentForYou"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Setup"
+        "Title" = "8:Setup OneNoteAddin"
         "Subject" = "8:"
         "ARPCONTACT" = "8:sunxu"
         "Keywords" = "8:"
@@ -981,6 +1032,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_36AA4677B3844F9A9B70EE40D493B54E"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_62665499F3C8403AB89718F253982CF6"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
+            "OutputProjectGuid" = "8:{C9187D11-1018-4009-9064-E62055CD69E3}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8CE3664D5F03439EA64E6EAD98E82508"
             {
             "SourcePath" = "8:..\\OneNoteAddin\\obj\\Debug\\OneNoteAddin.dll"

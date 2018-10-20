@@ -42,7 +42,7 @@ CurrentSectionGroupId : {app.Windows.CurrentWindow.CurrentSectionGroupId}
         {
             string pageId = app.Windows.CurrentWindow.CurrentPageId;
             string xml;
-            app.GetPageContent(pageId, out xml);
+            app.GetPageContent(pageId, out xml, PageInfo.piAll, XMLSchema.xsCurrent);
             showForm.Show(xml);
         }
 
@@ -70,7 +70,7 @@ CurrentSectionGroupId : {app.Windows.CurrentWindow.CurrentSectionGroupId}
 
         public void InsertATable(IRibbonControl control)
         {
-            InsertWithClipboard(TextDataFormat.Html, @"Version:1.0
+            CopyToClipboard( @"Version:1.0
 StartHTML:0000000105
 EndHTML:0000001067
 StartFragment:0000000527
@@ -107,16 +107,16 @@ xmlns=""http://www.w3.org/TR/REC-html40"">
 <!--EndFragment-->
 </body>
 
-</html>");
+</html>", TextDataFormat.Html);
+            SendKeys.SendWait("^(v)");
         }
 
-        private void InsertWithClipboard(TextDataFormat format, string context)
+        private void CopyToClipboard(string context, TextDataFormat format = TextDataFormat.Text)
         {
             RunInThread(() =>
             {
                 Clipboard.SetText(context, format);
             });
-            SendKeys.SendWait("^(v)");
         }
 
         private void RunInThread(ThreadStart method)

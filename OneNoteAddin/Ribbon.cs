@@ -36,11 +36,11 @@ namespace OneNoteAddin
 
         public void OnStartupComplete(ref Array custom)
         {
-
+            vsCodeHandler = new Handler.VSCodeHandler(setting.VSCode);
         }
 
         #endregion
-        
+
         #region shutdown
 
         public void OnBeginShutdown(ref Array custom)
@@ -57,7 +57,9 @@ namespace OneNoteAddin
             if (app != null)
             {
                 showForm.Close();
+                wordHandler.Close();
                 SaveSetting();
+                vsCodeHandler.Close();
 
                 app = null;
                 GC.Collect();

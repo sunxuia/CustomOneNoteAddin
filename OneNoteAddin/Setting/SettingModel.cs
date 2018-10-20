@@ -27,9 +27,10 @@ namespace OneNoteAddin.Setting
                 XmlSerializer xs = new XmlSerializer(typeof(SettingModel));
                 var setting = (SettingModel)xs.Deserialize(reader);
                 FilePath = filePath;
-                CodeStyles = setting.CodeStyles ?? new List<string>();
+                CodeStyles = setting.CodeStyles ?? new List<CodeStyleModel>();
                 DefaultValues = setting.DefaultValues ?? new List<DefaultValueModel>();
                 Tables = setting.Tables ?? new List<TableModel>();
+                VSCode = setting.VSCode;
             }
         }
 
@@ -40,7 +41,7 @@ namespace OneNoteAddin.Setting
         /// </summary>
         [XmlArray("codeStyles", IsNullable = true)]
         [XmlArrayItem("codeStyle")]
-        public List<string> CodeStyles;
+        public List<CodeStyleModel> CodeStyles;
 
         /// <summary>
         /// setted value of ribbon
@@ -55,6 +56,9 @@ namespace OneNoteAddin.Setting
         [XmlArray("tables", IsNullable = true)]
         [XmlArrayItem("table")]
         public List<TableModel> Tables;
+
+        [XmlElement("vsCode")]
+        public string VSCode { get; set; }
 
         /// <summary>
         /// xml file path

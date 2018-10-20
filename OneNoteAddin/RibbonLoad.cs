@@ -57,21 +57,24 @@ namespace OneNoteAddin
             XmlNamespaceManager namespaceManager = new XmlNamespaceManager(doc.NameTable);
             namespaceManager.AddNamespace("r", xmlns);
 
+            // code style combobox
             var codeStyleNode = root.SelectSingleNode("//r:comboBox[@id='cmbStyle']", namespaceManager);
             if (codeStyleNode != null)
             {
                 AddCodeStyles(codeStyleNode as XmlElement, doc);
             }
 
+            // font combobox
             foreach (XmlNode node in root.SelectNodes("//r:comboBox[@imageMso='FontColorGallery']", namespaceManager))
             {
                 AddFontItems(node as XmlElement, doc);
             }
 
+            // insert table bottons
             XmlElement grpTable = root.SelectSingleNode("//r:group[@id='grpTable']", namespaceManager) as XmlElement;
             AddTables(grpTable, doc);
         }
-
+        
         private void AddFontItems(XmlElement node, XmlDocument doc)
         {
             string nodeId = node.Attributes["id"].Value;
@@ -93,7 +96,7 @@ namespace OneNoteAddin
             {
                 XmlElement item = doc.CreateElement("item", node.NamespaceURI);
                 item.SetAttribute("id", "__" + nodeId + "_" + i++);
-                item.SetAttribute("label", style); ;
+                item.SetAttribute("label", style.Label); ;
                 node.AppendChild(item);
             }
         }
@@ -105,12 +108,11 @@ namespace OneNoteAddin
             {
                 var table = setting.Tables[i];
                 XmlElement btn = doc.CreateElement("button", node.NamespaceURI);
-                btn.SetAttribute("id", "__" + nodeId + "_" + i++);
+                btn.SetAttribute("id", "__" + nodeId + "_" + i);
                 btn.SetAttribute("imageMso", "AdpDiagramAddTable");
                 btn.SetAttribute("label", table.Label);
                 btn.SetAttribute("size", table.Size);
-                btn.SetAttribute("onAction", "onButtonClick");
-                btn.SetAttribute("tag", "" + i);
+                btn.SetAttribute("onAction", "OnInsertTableClick");
                 node.AppendChild(btn);
             }
         }

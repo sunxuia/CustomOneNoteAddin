@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <setting>
   <codeStyles>
-    <codeStyle>None</codeStyle>
-    <codeStyle>C#</codeStyle>
-    <codeStyle>C++</codeStyle>
-    <codeStyle>CSS</codeStyle>
-    <codeStyle>HTML</codeStyle>
-    <codeStyle>Java</codeStyle>
-    <codeStyle>JavaScript</codeStyle>
-    <codeStyle>JSON</codeStyle>
-    <codeStyle>Python</codeStyle>
-    <codeStyle>SQL</codeStyle>
-    <codeStyle>TypeScript</codeStyle>
-    <codeStyle>XML</codeStyle>
-    <codeStyle>YAML</codeStyle>
+    <codeStyle label="original format" comment=""/>
+    <codeStyle label="plaintext" comment=""/>
+    <codeStyle label="C#" comment="//" />
+    <codeStyle label="C++" comment="//" />
+    <codeStyle label="CSS" comment="/*  */" />
+    <codeStyle label="HTML" comment="&lt;!--  --&gt;" />
+    <codeStyle label="Java" comment="//" />
+    <codeStyle label="JavaScript" comment="//" />
+    <codeStyle label="JSON" comment="" />
+    <codeStyle label="Python" comment="#" />
+    <codeStyle label="SQL" comment="--" />
+    <codeStyle label="TypeScript" comment="//" />
+    <codeStyle label="XML" comment="&lt;!--  --&gt;" />
+    <codeStyle label="YAML" comment="#" />
   </codeStyles>
   <defaultValues>
     <defaultValue id="cmbFont1" value="Microsoft YaHei Mono"></defaultValue>
@@ -23,4 +24,5 @@
   <tables>
     <table label="Blue Title Table" size="large" row="2" column="2" foreColor="ffffff" backColor="2e75b5" headInLeft="true" />
   </tables>
+  <vsCode>E:\ToolsDevelop\Microsoft VS Code\code.exe</vsCode>
 </setting>
