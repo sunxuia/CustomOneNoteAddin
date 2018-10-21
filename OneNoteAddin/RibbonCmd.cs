@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -58,15 +59,14 @@ namespace OneNoteAddin
 
         public void OnInsertCode(IRibbonControl control)
         {
-            FormatByVSCode();
-            vsCodeHandler.windowHandler.DeactiveWindow();
+            FormatByVSCode(true);
             wordHandler.CopyCode();
             // 粘贴
             SendKeys.SendWait("^(v)");
 
         }
 
-        private void FormatByVSCode()
+        private void FormatByVSCode(bool format)
         {
             string codeStyle = GetDefaultValue("cmbStyle");
             if (!string.IsNullOrEmpty(codeStyle) && codeStyle.ToUpper() != "ORIGINAL FORMAT")
@@ -80,7 +80,14 @@ namespace OneNoteAddin
                     vsCodeHandler.ChangeLanguageMode(codeStyle);
                     prevCodeStyle = codeStyle;
                 }
-                vsCodeHandler.PasteFormatCut();
+                if (format)
+                {
+                    vsCodeHandler.PasteFormatCut();
+                }
+                else
+                {
+                    vsCodeHandler.PasteCut();
+                }
             }
         }
 
@@ -103,7 +110,7 @@ namespace OneNoteAddin
                 if (!string.IsNullOrEmpty(comment))
                 {
                     CopyToClipboard(comment);
-                    FormatByVSCode();
+                    FormatByVSCode(false);
                     wordHandler.PasteAndCopy();
                     SendKeys.SendWait("^(v)");
                 }
@@ -114,17 +121,19 @@ namespace OneNoteAddin
         {
             OneNotePageHandler page = new OneNotePageHandler(app);
             string text = page.GetSelectedText();
+            var isCell = false;
             if (string.IsNullOrEmpty(text))
             {
-                var table = page.GetCursorElement("Table");
-                if (table == null)
+                isCell = true;
+                var cell = page.GetCursorElement("Cell");
+                if (cell == null)
                 {
                     MessageBox.Show("Please select text or set input cursor into a table.");
                     return;
                 }
                 else
                 {
-                    text = page.GetInnerText(table);
+                    text = page.GetInnerText(cell);
                 }
             }
 
@@ -133,9 +142,17 @@ namespace OneNoteAddin
             if (codeHandler.EditCode(GetDefaultValue("cmbStyle"), out string newText))
             {
                 CopyToClipboard(newText);
-                FormatByVSCode();
+                FormatByVSCode(false);
                 wordHandler.PasteAndCopy();
-                SendKeys.SendWait("^(v)");
+                if (isCell)
+                {
+                    // 单元格替换
+                    SendKeys.SendWait("^(aav)");
+                }
+                else
+                {
+                    SendKeys.SendWait("^(v)");
+                }
             }
         }
 
@@ -220,8 +237,16 @@ namespace OneNoteAddin
             table.BackColor = Regex.Match(table.BackColor, "[0-9a-fA-F]+").Groups[0].Value;
 
             wordHandler.CreateTable(table);
-            // 粘贴
-            SendKeys.SendWait("^(v)");
+            // 粘贴与删除每个单元格内的空格
+            StringBuilder sb = new StringBuilder("^(v)");
+            for (int r = 0; r < table.Row + (table.HeadInLeft ? 0 : 1); r++)
+            {
+                for (int c = 0; c < table.Column + (table.HeadInLeft ? 1 : 0); c++)
+                {
+                    sb.Append("{LEFT}{BACKSPACE}");
+                }
+            }
+            SendKeys.SendWait(sb.ToString());
         }
 
         public void OnOpenSettingFileClick(IRibbonControl control)

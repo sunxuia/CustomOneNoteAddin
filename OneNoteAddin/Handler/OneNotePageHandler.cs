@@ -29,7 +29,7 @@ namespace OneNoteAddin.Handler
 
         public string GetSelectedText()
         {
-            return GetInnerText(Descendants(doc.Root, "T")
+            return GetInnerHtmlText(Descendants(doc.Root, "T")
                 .Where(n => HasAttributeValue(n, "selected", "all")));
         }
 
@@ -54,17 +54,38 @@ namespace OneNoteAddin.Handler
             return false;
         }
 
-        public string GetInnerText(IEnumerable<XElement> elements)
+        private string GetInnerHtmlText(IEnumerable<XElement> elements)
         {
             StringBuilder sb = new StringBuilder();
-            elements.Select(n =>
+            bool beforeCursor = true, nextToCursor = false;
+            foreach (var node in elements)
             {
                 var htmlDocument = new HtmlAgilityPack.HtmlDocument();
-                htmlDocument.LoadHtml(n.Value);
-                return HttpUtility.HtmlDecode(htmlDocument.DocumentNode.InnerText);
-            })
-            .ToList()
-            .ForEach(s => sb.Append(s).Append("\n"));
+                htmlDocument.LoadHtml(node.Value);
+                string line = HttpUtility.HtmlDecode(htmlDocument.DocumentNode.InnerText);
+                if (nextToCursor)
+                {
+                    sb.Append(line);
+                    nextToCursor = false;
+                }
+                else
+                {
+                    if (beforeCursor)
+                    {
+                        beforeCursor = !HasAttributeValue(node, "selected", "all");
+                        nextToCursor = !beforeCursor && string.IsNullOrEmpty(line);
+                    }
+                    if (!nextToCursor)
+                    {
+                        // non-cursor element
+                        sb.Append('\n').Append(line);
+                    }
+                }
+            }
+            if (sb.Length > 0 && sb[0] == '\n')
+            {
+                sb.Remove(0, 1);
+            }
             return sb.ToString();
         }
 
@@ -102,7 +123,7 @@ namespace OneNoteAddin.Handler
 
         public string GetInnerText(XElement element)
         {
-            return GetInnerText(Descendants(element, "T"));
+            return GetInnerHtmlText(Descendants(element, "T"));
         }
 
         public void SetAttributeValue(IEnumerable<XElement> elements,

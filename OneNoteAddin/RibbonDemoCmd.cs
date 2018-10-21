@@ -111,7 +111,7 @@ xmlns=""http://www.w3.org/TR/REC-html40"">
             SendKeys.SendWait("^(v)");
         }
 
-        private void CopyToClipboard(string context, TextDataFormat format = TextDataFormat.Text)
+        private void CopyToClipboard(string context, TextDataFormat format = TextDataFormat.UnicodeText)
         {
             RunInThread(() =>
             {

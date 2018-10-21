@@ -21,7 +21,7 @@ namespace OneNoteAddin
         public void OnConnection(object app, ext_ConnectMode connectMode, object addInInst, ref Array custom)
         {
             this.app = app as OneNote.Application;
-            //System.Diagnostics.Debugger.Launch();
+            System.Diagnostics.Debugger.Launch();
         }
 
         public void OnAddInsUpdate(ref Array custom)

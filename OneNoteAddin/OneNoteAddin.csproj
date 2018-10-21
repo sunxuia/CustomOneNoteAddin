@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CCOMStreamWrapper.cs" />
-    <Compile Include="Handler\OneNoteHandler.cs" />
+    <Compile Include="Handler\OneNotePageHandler.cs" />
     <Compile Include="RibbonCmd.cs" />
     <Compile Include="RibbonDemoCmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

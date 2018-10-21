@@ -17,7 +17,7 @@ namespace OneNoteAddin.Handler
     /// </summary>
     public class VSCodeHandler
     {
-        public WindowHandler windowHandler;
+        private WindowHandler windowHandler;
 
         private string vsCodePath;
 
@@ -43,28 +43,35 @@ namespace OneNoteAddin.Handler
 
         private void StartProcess(string title)
         {
-            windowHandler = new WindowHandler();
-
-            filePath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase.Substring(8)),
-                title);
-            if (File.Exists(filePath))
+            try
             {
-                File.Delete(filePath);
+                windowHandler = new WindowHandler();
+
+                filePath = Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase.Substring(8)),
+                    title);
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+
+
+                Process vscp = new Process();
+                vscp.StartInfo.FileName = vsCodePath;
+                vscp.StartInfo.Arguments = "-n \"" + filePath + "\"";
+                vscp.Start();
+
+                // 等待visual studio code 启动, 不然标题不会显示文件名
+                do
+                {
+                    Thread.Sleep(500);
+                } while (!windowHandler.SetWindow(
+                    "Chrome_WidgetWin_1",
+                    title + " - Visual Studio Code"));
             }
-
-
-            Process vscp = new Process();
-            vscp.StartInfo.FileName = vsCodePath;
-            vscp.StartInfo.Arguments = "-n \"" + filePath + "\"";
-            vscp.Start();
-
-            // 等待visual studio code 启动, 不然标题不会显示文件名
-            while (!windowHandler.SetWindow(
-                "Chrome_WidgetWin_1",
-                title + " - Visual Studio Code"))
+            catch (Exception err)
             {
-                Thread.Sleep(500);
+                MessageBox.Show("Error while start visual studio code : \n" + err.ToString());
             }
         }
 
@@ -74,7 +81,11 @@ namespace OneNoteAddin.Handler
         /// <param name="codeStyle">代码格式</param>
         public void ChangeLanguageMode(string codeStyle)
         {
-            windowHandler.ActiveWindow();
+            bool isVisible = windowHandler.IsWindowVisible();
+            if (!isVisible)
+            {
+                windowHandler.ActiveWindow();
+            }
 
             // 避免输入法影响
             bool isCapsPressed = WindowHandler.IsCapsLockPressed();
@@ -83,15 +94,17 @@ namespace OneNoteAddin.Handler
                 WindowHandler.SendCapsLock();
             }
             SendKeys.SendWait("^(k)m");
-            Thread.Sleep(300);
-            SendKeys.SendWait($"{codeStyle}\n");
+            Thread.Sleep(350);
+            SendKeys.SendWait($"{codeStyle}");
+            Thread.Sleep(150);
+            SendKeys.SendWait("\n");
 
             if (!isCapsPressed)
             {
                 WindowHandler.SendCapsLock();
             }
 
-            if (!windowHandler.IsWindowVisible())
+            if (!isVisible)
             {
                 windowHandler.DeactiveWindow();
             }
@@ -122,13 +135,35 @@ namespace OneNoteAddin.Handler
         {
             windowHandler.ActiveWindow();
 
-            Thread.Sleep(200);
-            SendKeys.SendWait("^(v)+%(f)");
+            // 粘贴
+            SendKeys.SendWait("^(v)");
+            // 格式化
+            SendKeys.SendWait("+%(f)");
+            // 等待格式化
             Thread.Sleep(300);
+            // 全选并剪切
             SendKeys.SendWait("^(ax)");
 
             windowHandler.DeactiveWindow();
         }
+
+        /// <summary>
+        /// 从剪切板粘贴然后复制
+        /// </summary>
+        public void PasteCut()
+        {
+            windowHandler.ActiveWindow();
+
+            // 粘贴
+            SendKeys.SendWait("^(v)");
+            // wait for rendering
+            Thread.Sleep(150);
+            // 全选并剪切
+            SendKeys.SendWait("^(ax)");
+
+            windowHandler.DeactiveWindow();
+        }
+
         /// <summary>
         /// 从剪切板粘贴然后保存, 然后编辑代码, 关闭后和保存的文件进行对比,
         /// 如果文件改变了就复制到剪切板中
@@ -145,11 +180,12 @@ namespace OneNoteAddin.Handler
             // 设置编辑器文件
             windowHandler.ActiveWindow();
             SendKeys.SendWait("^(vs)");
-            while (!File.Exists(filePath))
+            string codeText;
+            do
             {
-                Thread.Sleep(200);
-            }
-            string codeText = File.ReadAllText(filePath);
+                Thread.Sleep(100);
+            } while (!TryReadFile(filePath, out codeText));
+
             ChangeLanguageMode(codeStyle);
 
             // 等待编辑完成(关闭窗口)
@@ -158,10 +194,27 @@ namespace OneNoteAddin.Handler
                 Thread.Sleep(500);
             }
 
-            // 查看文件是否变化
-            newText = File.ReadAllText(filePath);
+            // 读取修改后的文件
+            while (!TryReadFile(filePath, out newText))
+            {
+                Thread.Sleep(100);
+            }
             File.Delete(filePath);
             return codeText != newText;
+        }
+
+        private bool TryReadFile(string filePath, out string text)
+        {
+            try
+            {
+                text = File.ReadAllText(filePath);
+                return true;
+            }
+            catch (Exception err)
+            {
+                text = err.ToString();
+                return false;
+            }
         }
     }
 }

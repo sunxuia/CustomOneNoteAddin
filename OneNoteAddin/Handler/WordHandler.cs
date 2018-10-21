@@ -36,7 +36,11 @@ namespace OneNoteAddin.Handler
             // 不复制最后的换行
             var sentences = wordDocument.Sentences;
             wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End - 1);
-            wordRange.Cut();
+            if (sentences.Count != 1 || sentences[1].End != 1)
+            {
+                // 避免剪切空行的异常
+                wordRange.Cut();
+            }
         }
 
         private void StartWord()
@@ -196,16 +200,16 @@ namespace OneNoteAddin.Handler
                 List<Cell> titleCells = new List<Cell>();
                 if (tableSetting.HeadInLeft)
                 {
-                    for (int i = 0; i < row; i++)
+                    for (int i = 1; i <= row; i++)
                     {
-                        titleCells.Add(table.Cell(i, 0));
+                        titleCells.Add(table.Cell(i, 1));
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < row; i++)
+                    for (int i = 1; i <= column; i++)
                     {
-                        titleCells.Add(table.Cell(0, i));
+                        titleCells.Add(table.Cell(1, i));
                     }
                 }
                 foreach (var titleCell in titleCells)
@@ -219,6 +223,7 @@ namespace OneNoteAddin.Handler
 
                 // 剪切到剪切板上
                 table.Range.Cut();
+                wordRange.Delete();
             }
             catch (Exception err)
             {
