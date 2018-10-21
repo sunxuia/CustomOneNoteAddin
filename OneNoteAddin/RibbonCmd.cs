@@ -61,8 +61,8 @@ namespace OneNoteAddin
             FormatByVSCode();
             vsCodeHandler.windowHandler.DeactiveWindow();
             wordHandler.CopyCode();
-            // 粘贴并去掉末尾的空格
-            SendKeys.SendWait("^(v){BACKSPACE}{BACKSPACE}");
+            // 粘贴
+            SendKeys.SendWait("^(v)");
 
         }
 
@@ -220,8 +220,8 @@ namespace OneNoteAddin
             table.BackColor = Regex.Match(table.BackColor, "[0-9a-fA-F]+").Groups[0].Value;
 
             wordHandler.CreateTable(table);
-            // 粘贴并去掉末尾的空格
-            SendKeys.SendWait("^(v){BACKSPACE}{BACKSPACE}");
+            // 粘贴
+            SendKeys.SendWait("^(v)");
         }
 
         public void OnOpenSettingFileClick(IRibbonControl control)

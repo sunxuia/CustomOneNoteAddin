@@ -1,12 +1,9 @@
 ﻿using OneNoteAddin.Setting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Word = Microsoft.Office.Interop.Word;
+using Forms = System.Windows.Forms;
+using Microsoft.Office.Interop.Word;
 
 namespace OneNoteAddin.Handler
 {
@@ -15,9 +12,9 @@ namespace OneNoteAddin.Handler
     /// </summary>
     public class WordHandler
     {
-        private Word.Application wordApplication;
-        private Word.Document wordDocument;
-        private Word.Range wordRange;
+        private Application wordApplication;
+        private Document wordDocument;
+        private Range wordRange;
 
         /// <summary>
         /// 粘贴然后复制
@@ -25,17 +22,21 @@ namespace OneNoteAddin.Handler
         public void PasteAndCopy()
         {
             StartWord();
-            wordRange.PasteAndFormat(Word.WdRecoveryType.wdPasteDefault);
-            wordRange.ParagraphFormat.LineSpacingRule = Word.WdLineSpacing.wdLineSpaceSingle;
+            wordRange.PasteAndFormat(WdRecoveryType.wdPasteDefault);
+            wordRange.ParagraphFormat.LineSpacingRule = WdLineSpacing.wdLineSpaceSingle;
+            wordRange.Font.Shading.Texture = WdTextureIndex.wdTextureNone;
 
-            object unit = Word.WdUnits.wdLine;
-            object what = Word.WdGoToItem.wdGoToLine;
-            object which = Word.WdGoToDirection.wdGoToLast;
+            object unit = WdUnits.wdLine;
+            object what = WdGoToItem.wdGoToLine;
+            object which = WdGoToDirection.wdGoToLast;
             object count = 99999999;
             wordApplication.Selection.GoTo(ref what, ref which, ref count);
             RemoveTailSpace();
 
-            WordCut();
+            // 不复制最后的换行
+            var sentences = wordDocument.Sentences;
+            wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End - 1);
+            wordRange.Cut();
         }
 
         private void StartWord()
@@ -57,14 +58,14 @@ namespace OneNoteAddin.Handler
             {
                 try
                 {
-                    wordApplication = new Word.Application();
-                    wordApplication.DisplayAlerts = Word.WdAlertLevel.wdAlertsNone;
+                    wordApplication = new Application();
+                    wordApplication.DisplayAlerts = WdAlertLevel.wdAlertsNone;
                     wordDocument = wordApplication.Documents.Add();
                     wordRange = wordDocument.Paragraphs[1].Range;
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show("Error happened while start word : \n" + err.Message);
+                    Forms.MessageBox.Show("Error happened while start word : \n" + err.Message);
                 }
             }
         }
@@ -72,17 +73,11 @@ namespace OneNoteAddin.Handler
         private void RemoveTailSpace()
         {
             int count = 0, maxTry = 1000;
-            while (count++ < maxTry && Regex.IsMatch(wordApplication.Selection.Text, "\\s"))
+            while (count++ < maxTry && Regex.IsMatch(wordApplication.Selection.Text, @"\s|\r?\n"))
             {
                 wordApplication.Selection.Delete();
                 wordApplication.Selection.MoveLeft();
             }
-        }
-
-        public void WordCut()
-        {
-            wordRange.Font.Shading.Texture = Word.WdTextureIndex.wdTextureNone;
-            wordRange.Cut();
         }
 
         /// <summary>
@@ -94,19 +89,20 @@ namespace OneNoteAddin.Handler
             StartWord();
 
             //把代码粘贴在一个表格中
-            Word.Table table = wordRange.Tables.Add(wordRange, 1, 1);
-            table.Cell(0, 0).Range.PasteAndFormat(Word.WdRecoveryType.wdPasteDefault);
-            //table.Cell(0, 0).Range.set_Style(Word.WdBuiltinStyle.wdStyleNormal);
+            Table table = wordRange.Tables.Add(wordRange, 1, 1);
+            table.Cell(0, 0).Range.PasteAndFormat(WdRecoveryType.wdPasteDefault);
+            //table.Cell(0, 0).Range.set_Style(WdBuiltinStyle.wdStyleNormal);
 
             // 删除末尾的空白
-            object unit = Word.WdUnits.wdLine;
-            object what = Word.WdGoToItem.wdGoToLine;
-            object which = Word.WdGoToDirection.wdGoToLast;
+            object unit = WdUnits.wdLine;
+            object what = WdGoToItem.wdGoToLine;
+            object which = WdGoToDirection.wdGoToLast;
             object count = 99999999;
             wordApplication.Selection.GoTo(ref what, ref which, ref count);
             wordApplication.Selection.MoveLeft();
+            wordApplication.Selection.Delete(); // 删除多余的换行
             wordApplication.Selection.MoveLeft();
-            wordApplication.Selection.MoveLeft();
+            wordApplication.Selection.MoveLeft(); // 进入单元格内
             RemoveTailSpace();
 
             // 删除每行前面的重复空格
@@ -147,10 +143,10 @@ namespace OneNoteAddin.Handler
 
 
             // 设置表格底纹颜色
-            table.Range.Shading.BackgroundPatternColor = (Word.WdColor)0xf8f8f8;
+            table.Range.Shading.BackgroundPatternColor = (WdColor)0xf8f8f8;
             //wordDocument.SaveAs2("d:\\test.docx");
 
-            WordCut();
+            table.Range.Cut();
         }
 
         public void Close()
@@ -193,11 +189,11 @@ namespace OneNoteAddin.Handler
                     row++;
                 }
 
-                Word.Table table = wordRange.Tables.Add(wordRange, row, column);
-                table.Borders.OutsideLineStyle = Microsoft.Office.Interop.Word.WdLineStyle.wdLineStyleThickThinLargeGap;
-                table.Borders.InsideLineStyle = Microsoft.Office.Interop.Word.WdLineStyle.wdLineStyleSingle;
+                Table table = wordRange.Tables.Add(wordRange, row, column);
+                table.Borders.OutsideLineStyle = WdLineStyle.wdLineStyleThickThinLargeGap;
+                table.Borders.InsideLineStyle = WdLineStyle.wdLineStyleSingle;
 
-                List<Word.Cell> titleCells = new List<Word.Cell>();
+                List<Cell> titleCells = new List<Cell>();
                 if (tableSetting.HeadInLeft)
                 {
                     for (int i = 0; i < row; i++)
@@ -217,16 +213,16 @@ namespace OneNoteAddin.Handler
                     var range = titleCell.Range;
                     range.Font.Size = 11;
                     range.Font.Bold = 1;
-                    range.Font.Color = (Word.WdColor)Convert.ToInt32(tableSetting.ForeColor, 16);
-                    range.Shading.BackgroundPatternColor = (Word.WdColor)Convert.ToInt32(tableSetting.BackColor, 16);
+                    range.Font.Color = (WdColor)Convert.ToInt32(tableSetting.ForeColor, 16);
+                    range.Shading.BackgroundPatternColor = (WdColor)Convert.ToInt32(tableSetting.BackColor, 16);
                 }
 
                 // 剪切到剪切板上
-                wordRange.Cut();
+                table.Range.Cut();
             }
             catch (Exception err)
             {
-                MessageBox.Show("Error while insert table : \n" + err.ToString());
+                Forms.MessageBox.Show("Error while insert table : \n" + err.ToString());
             }
         }
     }
