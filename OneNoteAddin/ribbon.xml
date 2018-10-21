@@ -2,7 +2,7 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="Ribbon_Load" loadImage="GetImage">
   <ribbon>
     <tabs>
-      <tab idMso="TabAddIns" label="Addin">
+      <tab id="tabCustom" label="Addin">
         <group id="grpDemo" label="Api Demo">
           <button id="btnStartDebug" onAction="StartDebug" label="Start Debug" size="large" image="Debug" />
           <button id="btnHierachy" imageMso="WorkspaceHtmlProperties" onAction="ShowHierachy" label="Hierachy" />
