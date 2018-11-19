@@ -95,7 +95,7 @@ namespace OneNoteAddin.Handler
             }
             SendKeys.SendWait("^(k)m");
             Thread.Sleep(350);
-            SendKeys.SendWait($"{codeStyle}");
+            SendKeys.SendWait($"{codeStyle.ToUpper()}");
             Thread.Sleep(150);
             SendKeys.SendWait("\n");
 

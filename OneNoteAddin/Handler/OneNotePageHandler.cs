@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using Forms = System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Office.Interop.OneNote;
@@ -164,7 +165,13 @@ namespace OneNoteAddin.Handler
 
         public void Save()
         {
-            app.UpdatePageContent(doc.ToString(), DateTime.MinValue);
+            try
+            {
+                app.UpdatePageContent(doc.ToString(), DateTime.MinValue);
+            }catch(Exception err)
+            {
+                Forms.MessageBox.Show("Error while update page : " + err.ToString());
+            }
         }
     }
 }

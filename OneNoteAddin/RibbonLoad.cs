@@ -74,17 +74,20 @@ namespace OneNoteAddin
             XmlElement grpTable = root.SelectSingleNode("//r:group[@id='grpTable']", namespaceManager) as XmlElement;
             AddTables(grpTable, doc);
         }
-        
+
         private void AddFontItems(XmlElement node, XmlDocument doc)
         {
             string nodeId = node.Attributes["id"].Value;
             var fonts = new System.Drawing.Text.InstalledFontCollection();
             for (int i = 0; i < fonts.Families.Length; i++)
             {
-                XmlElement item = doc.CreateElement("item", node.NamespaceURI);
-                item.SetAttribute("id", "__" + nodeId + "_" + i);
-                item.SetAttribute("label", fonts.Families[i].Name);
-                node.AppendChild(item);
+                if (!string.IsNullOrEmpty(fonts.Families[i].Name))
+                {
+                    XmlElement item = doc.CreateElement("item", node.NamespaceURI);
+                    item.SetAttribute("id", "__" + nodeId + "_" + i);
+                    item.SetAttribute("label", fonts.Families[i].Name);
+                    node.AppendChild(item);
+                }
             }
         }
 
@@ -111,7 +114,10 @@ namespace OneNoteAddin
                 btn.SetAttribute("id", "__" + nodeId + "_" + i);
                 btn.SetAttribute("imageMso", "AdpDiagramAddTable");
                 btn.SetAttribute("label", table.Label);
-                btn.SetAttribute("size", table.Size);
+                if (table.Size != null)
+                {
+                    btn.SetAttribute("size", table.Size);
+                }
                 btn.SetAttribute("onAction", "OnInsertTableClick");
                 node.AppendChild(btn);
             }

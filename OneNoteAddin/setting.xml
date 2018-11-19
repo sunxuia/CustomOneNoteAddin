@@ -3,18 +3,18 @@
   <codeStyles>
     <codeStyle label="original format" comment=""/>
     <codeStyle label="plaintext" comment=""/>
-    <codeStyle label="C#" comment="//" />
-    <codeStyle label="Cpp" comment="//" />
-    <codeStyle label="CSS" comment="/*  */" />
-    <codeStyle label="HTML" comment="&lt;!--  --&gt;" />
-    <codeStyle label="Java" comment="//" />
-    <codeStyle label="JavaScript" comment="//" />
-    <codeStyle label="JSON" comment="" />
-    <codeStyle label="Python" comment="#" />
-    <codeStyle label="SQL" comment="--" />
-    <codeStyle label="TypeScript" comment="//" />
-    <codeStyle label="XML" comment="&lt;!--  --&gt;" />
-    <codeStyle label="YAML" comment="#" />
+    <codeStyle label="csharp" comment="// " />
+    <codeStyle label="cpp" comment="// " />
+    <codeStyle label="css" comment="/*  */" />
+    <codeStyle label="html" comment="&lt;!--  --&gt;" />
+    <codeStyle label="java" comment="// " />
+    <codeStyle label="javascript" comment="// " />
+    <codeStyle label="json" comment="" />
+    <codeStyle label="python" comment="# " />
+    <codeStyle label="sql" comment="--" />
+    <codeStyle label="typescript" comment="// " />
+    <codeStyle label="xml" comment="&lt;!--  --&gt;" />
+    <codeStyle label="yaml" comment="# " />
   </codeStyles>
   <defaultValues>
     <defaultValue id="cmbFont1" value="Microsoft YaHei Mono"></defaultValue>
@@ -22,7 +22,8 @@
     <defaultValue id="cmbFont3" value="微软雅黑 Light"></defaultValue>
   </defaultValues>
   <tables>
-    <table label="Brone Title Table" size="large" row="2" column="2" foreColor="ffffff" backColor="2e75b5" headInLeft="true" />
+    <table label="Gray Head Table" row="2" column="3" foreColor="000000" backColor="d8d8d8" headInLeft="false" />
+    <table label="Gray Left Table" row="3" column="2" foreColor="000000" backColor="d8d8d8" headInLeft="true" />
   </tables>
-  <vsCode>E:\ToolsDevelop\Microsoft VS Code\code.exe</vsCode>
+  <vsCode>E:\Program Files\Microsoft VS Code\code.exe</vsCode>
 </setting>

@@ -150,7 +150,10 @@ namespace OneNoteAddin.Handler
             table.Range.Shading.BackgroundPatternColor = (WdColor)0xf8f8f8;
             //wordDocument.SaveAs2("d:\\test.docx");
 
-            table.Range.Cut();
+            //table.Range.Cut();
+            var sentences = wordDocument.Sentences;
+            wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End);
+            wordRange.Cut();
         }
 
         public void Close()

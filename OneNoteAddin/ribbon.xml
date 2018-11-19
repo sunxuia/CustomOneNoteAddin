@@ -15,10 +15,10 @@
           <box id="box4" boxStyle="vertical">
             <comboBox id="cmbStyle" imageMso="CodeEdit" label="Code" showLabel="false" getText="GetText" onChange="OnTextChange">
             </comboBox>
-            <button id="btnInsertCode" imageMso="HtmlListCodeSnippets" label="Insert Code" onAction="OnInsertCode" />
             <button id="btnInsertComment" label="Insert Comment" image="InsertComment" onAction="OnInsertComment" />
+          <button id="btnOpenInVSCode" label="Edit in VS Code" image="VSCode" onAction="OnOpenInVSCode" />
           </box>
-          <button id="btnOpenInVSCode" label="Edit in VS Code" size="large" image="VSCode" onAction="OnOpenInVSCode" />
+          <button id="btnInsertCode" imageMso="HtmlListCodeSnippets" label="Insert Code" size="large" onAction="OnInsertCode" />
           <button id="btnCopyWithWord" imageMso="FileSaveAsWord97_2003" label="Paste With Word" size="large" onAction="OnPasteWithWord" />
         </group>
         <group id="grpFont" label="Font">

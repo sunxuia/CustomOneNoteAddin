@@ -61,8 +61,9 @@ namespace OneNoteAddin
         {
             FormatByVSCode(true);
             wordHandler.CopyCode();
-            // 粘贴
-            SendKeys.SendWait("^(v)");
+            // 粘贴并删除末尾的空格
+            // 如果单纯粘贴一个表格会在onenote 中进行合并
+            SendKeys.SendWait("^(v){BACKSPACE}{BACKSPACE}");
 
         }
 
@@ -161,19 +162,30 @@ namespace OneNoteAddin
             OneNotePageHandler page = new OneNotePageHandler(app);
             string id = GetControlId(control).ToUpper();
             string fontName = GetDefaultValue("cmbFont" + Regex.Match(id, @"\d+").Value);
+            if (fontName.Contains(" "))
+            {
+                fontName = "\\\"" + fontName + "\\\"";
+            }
             bool addFontFamilyIfNotExist = false;
             Func<string, string> setFontFamily = value =>
             {
                 value = value ?? "";
-                var match = Regex.Match(value, @"font-family:[^;]*;");
+                var match = Regex.Match(value, @"font-family:(?:\r?\n)?(?:""[^;]*""|[^;]*)(?:;|$)");
                 if (match.Success)
                 {
                     value = value.Remove(match.Groups[0].Index, match.Groups[0].Length);
-                    value = $"font-family:{fontName};" + value;
                 }
-                else if (addFontFamilyIfNotExist)
+
+                if (match.Success || addFontFamilyIfNotExist)
                 {
-                    value = $"font-family:{fontName};" + value;
+                    if (value.Length == 0)
+                    {
+                        value = $"font-family:{fontName}";
+                    }
+                    else
+                    {
+                        value = $"font-family:{fontName};" + value;
+                    }
                 }
                 return value;
             };
@@ -253,7 +265,6 @@ namespace OneNoteAddin
         {
             var process = new System.Diagnostics.Process();
             process.StartInfo.FileName = setting.FilePath;
-            process.StartInfo.Arguments = "notepad";
             process.Start();
         }
     }
