@@ -25,5 +25,5 @@
     <table label="Gray Head Table" row="2" column="3" foreColor="000000" backColor="d8d8d8" headInLeft="false" />
     <table label="Gray Left Table" row="3" column="2" foreColor="000000" backColor="d8d8d8" headInLeft="true" />
   </tables>
-  <vsCode>E:\Program Files\Microsoft VS Code\code.exe</vsCode>
+  <vsCode>E:\DevelopTools\Microsoft VS Code\code.exe</vsCode>
 </setting>

@@ -16,10 +16,13 @@
             <comboBox id="cmbStyle" imageMso="CodeEdit" label="Code" showLabel="false" getText="GetText" onChange="OnTextChange">
             </comboBox>
             <button id="btnInsertComment" label="Insert Comment" image="InsertComment" onAction="OnInsertComment" />
-          <button id="btnOpenInVSCode" label="Edit in VS Code" image="VSCode" onAction="OnOpenInVSCode" />
+            <button id="btnOpenInVSCode" label="Edit in VS Code" image="VSCode" onAction="OnOpenInVSCode" />
           </box>
-          <button id="btnInsertCode" imageMso="HtmlListCodeSnippets" label="Insert Code" size="large" onAction="OnInsertCode" />
-          <button id="btnCopyWithWord" imageMso="FileSaveAsWord97_2003" label="Paste With Word" size="large" onAction="OnPasteWithWord" />
+          <box id="box5" boxStyle="vertical">
+            <button id="btnInsertCode" imageMso="HtmlListCodeSnippets" label="Insert Code" onAction="OnInsertCode" />
+            <button id="btnInsertCodeWoTable" imageMso="HtmlListCodeSnippets" label="Insert Code Part" onAction="OnInsertCodePart" />
+            <button id="btnCopyWithWord" imageMso="FileSaveAsWord97_2003" label="Paste With Word" onAction="OnPasteWithWord" />
+          </box>
         </group>
         <group id="grpFont" label="Font">
           <box id="box1">

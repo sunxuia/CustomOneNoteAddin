@@ -28,6 +28,7 @@ namespace OneNoteAddin
         {
             try
             {
+                //System.Diagnostics.Debugger.Launch();
                 LoadSetting();
 
                 string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase.Substring(8)), "ribbon.xml");

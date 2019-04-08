@@ -186,6 +186,7 @@ namespace OneNoteAddin.Handler
                 Thread.Sleep(100);
             } while (!TryReadFile(filePath, out codeText));
 
+            Thread.Sleep(500);
             ChangeLanguageMode(codeStyle);
 
             // 等待编辑完成(关闭窗口)

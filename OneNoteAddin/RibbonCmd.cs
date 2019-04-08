@@ -53,7 +53,7 @@ namespace OneNoteAddin
 
         public void OnPasteWithWord(IRibbonControl control)
         {
-            wordHandler.PasteAndCopy();
+            wordHandler.PasteAndCopy(false);
             SendKeys.SendWait("^(v)");
         }
 
@@ -65,6 +65,13 @@ namespace OneNoteAddin
             // 如果单纯粘贴一个表格会在onenote 中进行合并
             SendKeys.SendWait("^(v){BACKSPACE}{BACKSPACE}");
 
+        }
+
+        public void OnInsertCodePart(IRibbonControl control)
+        {
+            FormatByVSCode(true);
+            wordHandler.PasteAndCopy(false);
+            SendKeys.SendWait("^(v)");
         }
 
         private void FormatByVSCode(bool format)
@@ -112,7 +119,7 @@ namespace OneNoteAddin
                 {
                     CopyToClipboard(comment);
                     FormatByVSCode(false);
-                    wordHandler.PasteAndCopy();
+                    wordHandler.PasteAndCopy(true);
                     SendKeys.SendWait("^(v)");
                 }
             }
@@ -144,7 +151,7 @@ namespace OneNoteAddin
             {
                 CopyToClipboard(newText);
                 FormatByVSCode(false);
-                wordHandler.PasteAndCopy();
+                wordHandler.PasteAndCopy(true);
                 if (isCell)
                 {
                     // 单元格替换
@@ -162,10 +169,10 @@ namespace OneNoteAddin
             OneNotePageHandler page = new OneNotePageHandler(app);
             string id = GetControlId(control).ToUpper();
             string fontName = GetDefaultValue("cmbFont" + Regex.Match(id, @"\d+").Value);
-            if (fontName.Contains(" "))
-            {
-                fontName = "\\\"" + fontName + "\\\"";
-            }
+            //if (fontName.Contains(" "))
+            //{
+            //    fontName = "\\\"" + fontName + "\\\"";
+            //}
             bool addFontFamilyIfNotExist = false;
             Func<string, string> setFontFamily = value =>
             {

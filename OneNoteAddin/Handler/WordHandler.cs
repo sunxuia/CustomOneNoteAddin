@@ -19,7 +19,7 @@ namespace OneNoteAddin.Handler
         /// <summary>
         /// 粘贴然后复制
         /// </summary>
-        public void PasteAndCopy()
+        public void PasteAndCopy(bool changeFont)
         {
             StartWord();
             wordRange.PasteAndFormat(WdRecoveryType.wdPasteDefault);
@@ -38,6 +38,12 @@ namespace OneNoteAddin.Handler
             wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End - 1);
             if (sentences.Count != 1 || sentences[1].End != 1)
             {
+                if (changeFont)
+                {
+                    wordRange.Font.Size = 11;
+                    wordRange.Font.Name = "Consolas";
+                    wordRange.Font.NameFarEast = "微软雅黑";
+                }
                 // 避免剪切空行的异常
                 wordRange.Cut();
             }
@@ -153,6 +159,9 @@ namespace OneNoteAddin.Handler
             //table.Range.Cut();
             var sentences = wordDocument.Sentences;
             wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End);
+            wordRange.Font.Size = 11;
+            wordRange.Font.Name = "Consolas";
+            wordRange.Font.NameFarEast = "微软雅黑";
             wordRange.Cut();
         }
 
@@ -224,6 +233,9 @@ namespace OneNoteAddin.Handler
                     range.Shading.BackgroundPatternColor = (WdColor)Convert.ToInt32(tableSetting.BackColor, 16);
                 }
 
+                table.Range.Font.Size = 11;
+                table.Range.Font.Name = "Consolas";
+                table.Range.Font.NameFarEast = "微软雅黑";
                 // 剪切到剪切板上
                 table.Range.Cut();
                 wordRange.Delete();
