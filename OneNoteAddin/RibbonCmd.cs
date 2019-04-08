@@ -70,7 +70,7 @@ namespace OneNoteAddin
         public void OnInsertCodePart(IRibbonControl control)
         {
             FormatByVSCode(true);
-            wordHandler.PasteAndCopy(false);
+            wordHandler.PasteAndCopy(true);
             SendKeys.SendWait("^(v)");
         }
 
@@ -169,32 +169,30 @@ namespace OneNoteAddin
             OneNotePageHandler page = new OneNotePageHandler(app);
             string id = GetControlId(control).ToUpper();
             string fontName = GetDefaultValue("cmbFont" + Regex.Match(id, @"\d+").Value);
-            //if (fontName.Contains(" "))
-            //{
-            //    fontName = "\\\"" + fontName + "\\\"";
-            //}
+            string oneNoteFontValue = fontName.Contains(" ") ? ("'" + fontName + "'") : fontName;
+            string htmlFontValue = fontName.Contains(" ") ? ("\\'" + fontName + "\\'") : fontName;
             bool addFontFamilyIfNotExist = false;
-            Func<string, string> setFontFamily = value =>
+            Func<string, string, string> setFontFamily = (attrValue, fontFamilyName) =>
             {
-                value = value ?? "";
-                var match = Regex.Match(value, @"font-family:(?:\r?\n)?(?:""[^;]*""|[^;]*)(?:;|$)");
+                attrValue = attrValue ?? "";
+                var match = Regex.Match(attrValue, @"font-family:(?:\r?\n)?(?:['""][^;]*['""]|[^;]*)(?:;|$)");
                 if (match.Success)
                 {
-                    value = value.Remove(match.Groups[0].Index, match.Groups[0].Length);
+                    attrValue = attrValue.Remove(match.Groups[0].Index, match.Groups[0].Length);
                 }
 
                 if (match.Success || addFontFamilyIfNotExist)
                 {
-                    if (value.Length == 0)
+                    if (attrValue.Length == 0)
                     {
-                        value = $"font-family:{fontName}";
+                        attrValue = $"font-family:{fontFamilyName}";
                     }
                     else
                     {
-                        value = $"font-family:{fontName};" + value;
+                        attrValue = $"font-family:{fontFamilyName};" + attrValue;
                     }
                 }
-                return value;
+                return attrValue;
             };
 
             Action<HtmlAgilityPack.HtmlDocument> changeTextHtml = doc =>
@@ -205,7 +203,7 @@ namespace OneNoteAddin
                     {
                         if (attr.Name == "style")
                         {
-                            attr.Value = setFontFamily.Invoke(attr.Value);
+                            attr.Value = setFontFamily.Invoke(attr.Value, htmlFontValue);
                             break;
                         }
                     }
@@ -223,7 +221,7 @@ namespace OneNoteAddin
                     (ref bool exist, ref string value) =>
                     {
                         exist = true;
-                        value = setFontFamily(value);
+                        value = setFontFamily(value, oneNoteFontValue);
                     });
                 addFontFamilyIfNotExist = false;
                 page.EnumTextHtml(selection, changeTextHtml);
@@ -236,7 +234,7 @@ namespace OneNoteAddin
                 {
                     if (exist)
                     {
-                        value = setFontFamily(value);
+                        value = setFontFamily(value, oneNoteFontValue);
                     }
                 });
                 page.EnumPageTextHtml(changeTextHtml);

@@ -136,13 +136,13 @@ namespace OneNoteAddin.Handler
                 bool exist = attr != null;
                 string value = attr?.Value;
                 modifier.Invoke(ref exist, ref value);
-                if (attr != null && !exist)
-                {
-                    attr.Remove();
-                }
-                else if (attr != null && attr.Value != value)
+                if (exist)
                 {
                     element.SetAttributeValue(attrName, value);
+                }
+                else if (attr != null)
+                {
+                    attr.Remove();
                 }
             }
         }
