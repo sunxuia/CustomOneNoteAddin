@@ -30,8 +30,13 @@ namespace OneNoteAddin.Handler
 
         public string GetSelectedText()
         {
-            return GetInnerHtmlText(Descendants(doc.Root, "T")
-                .Where(n => HasAttributeValue(n, "selected", "all")));
+            return GetInnerHtmlText(GetSelectedTextElement());
+        }
+
+        public IEnumerable<XElement> GetSelectedTextElement()
+        {
+            return Descendants(doc.Root, "T")
+                .Where(n => HasAttributeValue(n, "selected", "all"));
         }
 
         private IEnumerable<XElement> Descendants(XElement node, string childNodeName)
@@ -90,22 +95,28 @@ namespace OneNoteAddin.Handler
             return sb.ToString();
         }
 
-        public IEnumerable<XElement> GetSelectedElements(string elementName)
-        {
-            return Descendants(doc.Root, elementName)
-                .Where(n => HasAttributeValue(n, "selected", "partial", "all"));
-        }
-
         public void EnumTextHtml(IEnumerable<XElement> elements, Action<HtmlAgilityPack.HtmlDocument> action)
         {
+            void SetHtml(XElement element)
+            {
+                var htmlDocument = new HtmlAgilityPack.HtmlDocument();
+                htmlDocument.LoadHtml(element.Value);
+                action.Invoke(htmlDocument);
+                element.SetValue(htmlDocument.DocumentNode.InnerHtml);
+            }
+
             foreach (var element in elements)
             {
-                foreach (var t in Descendants(element, "T"))
+                if (element.Name == doc.Root.Name.Namespace + "T")
                 {
-                    var htmlDocument = new HtmlAgilityPack.HtmlDocument();
-                    htmlDocument.LoadHtml(t.Value);
-                    action.Invoke(htmlDocument);
-                    t.Value = htmlDocument.Text;
+                    SetHtml(element);
+                }
+                else
+                {
+                    foreach (var tElement in Descendants(element, "T"))
+                    {
+                        SetHtml(element);
+                    }
                 }
             }
         }
@@ -156,10 +167,13 @@ namespace OneNoteAddin.Handler
 
         public void SetQuickStyleDef(string attrName, string attrValue)
         {
-            var def = Descendants(doc.Root, "QuickStyleDef").FirstOrDefault();
-            if (def != null)
+            var elements = Descendants(doc.Root, "QuickStyleDef");
+            if (elements != null)
             {
-                def.SetAttributeValue(attrName, attrValue);
+                foreach (var element in elements)
+                {
+                    element.SetAttributeValue(attrName, attrValue);
+                }
             }
         }
 

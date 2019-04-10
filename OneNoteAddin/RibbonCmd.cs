@@ -170,7 +170,7 @@ namespace OneNoteAddin
             string id = GetControlId(control).ToUpper();
             string fontName = GetDefaultValue("cmbFont" + Regex.Match(id, @"\d+").Value);
             string oneNoteFontValue = fontName.Contains(" ") ? ("'" + fontName + "'") : fontName;
-            string htmlFontValue = fontName.Contains(" ") ? ("\\'" + fontName + "\\'") : fontName;
+            string htmlFontValue = fontName.Contains(" ") ? ("\"" + fontName + "\"") : fontName;
             bool addFontFamilyIfNotExist = false;
             Func<string, string, string> setFontFamily = (attrValue, fontFamilyName) =>
             {
@@ -203,7 +203,8 @@ namespace OneNoteAddin
                     {
                         if (attr.Name == "style")
                         {
-                            attr.Value = setFontFamily.Invoke(attr.Value, htmlFontValue);
+                            string newValue = setFontFamily.Invoke(attr.Value, htmlFontValue);
+                            attr.Value = newValue;
                             break;
                         }
                     }
@@ -213,10 +214,14 @@ namespace OneNoteAddin
             if (id.Contains("SELECTION"))
             {
                 // set selection
-                var selection = page.GetSelectedElements("OE");
+                var selections = page.GetSelectedTextElement();
+                if (selections.Count() == 1 && selections.First().Value == "")
+                {
+                    selections = selections.First().Parent.Elements();
+                }
                 addFontFamilyIfNotExist = true;
                 page.SetAttributeValue(
-                    selection,
+                    selections,
                     "style",
                     (ref bool exist, ref string value) =>
                     {
@@ -224,7 +229,7 @@ namespace OneNoteAddin
                         value = setFontFamily(value, oneNoteFontValue);
                     });
                 addFontFamilyIfNotExist = false;
-                page.EnumTextHtml(selection, changeTextHtml);
+                page.EnumTextHtml(selections, changeTextHtml);
             }
             else
             {
