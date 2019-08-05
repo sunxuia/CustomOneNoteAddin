@@ -72,6 +72,7 @@ namespace OneNoteAddin.Handler
                     wordApplication.DisplayAlerts = WdAlertLevel.wdAlertsNone;
                     wordDocument = wordApplication.Documents.Add();
                     wordRange = wordDocument.Paragraphs[1].Range;
+                    wordDocument.ActiveWindow.View.Type = Microsoft.Office.Interop.Word.WdViewType.wdWebView;
                 }
                 catch (Exception err)
                 {
@@ -98,7 +99,52 @@ namespace OneNoteAddin.Handler
         {
             StartWord();
 
-            //把代码粘贴在一个表格中
+            wordRange.PasteAndFormat(WdRecoveryType.wdPasteDefault);
+            wordRange.ParagraphFormat.LineSpacingRule = WdLineSpacing.wdLineSpaceSingle;
+            wordRange.Font.Shading.Texture = WdTextureIndex.wdTextureNone;
+
+            // 删除每行前面的重复空格
+            string text = wordRange.Text;
+            int spaceCount = int.MaxValue;
+            foreach (var line in text.Split('\n'))
+            {
+                int thisRowSpaceCount = 0;
+                if (!Regex.IsMatch(line, @"^\s+$"))
+                {
+                    foreach (var c in line)
+                    {
+                        if (Regex.IsMatch(c.ToString(), @"\s"))
+                        {
+                            thisRowSpaceCount++;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    spaceCount = Math.Min(spaceCount, thisRowSpaceCount);
+                }
+            }
+            if (spaceCount > 0)
+            {
+                wordRange.Select();
+                wordApplication.Selection.MoveLeft();
+                do
+                {
+                    for (int i = 0; i < spaceCount; i++)
+                    {
+                        string s = wordApplication.Selection.Text;
+                        if (!@Regex.IsMatch(s, @"\r|\n"))
+                        {
+                            wordApplication.Selection.Delete();
+                        }
+                    }
+                } while (wordApplication.Selection.MoveDown() != 0);
+            }
+            wordRange.Select();
+            wordRange.Cut();
+
+            //把代码粘贴在一个表格单元格中
             Table table = wordRange.Tables.Add(wordRange, 1, 1);
             table.Cell(0, 0).Range.PasteAndFormat(WdRecoveryType.wdPasteDefault);
             //table.Cell(0, 0).Range.set_Style(WdBuiltinStyle.wdStyleNormal);
@@ -114,47 +160,10 @@ namespace OneNoteAddin.Handler
             wordApplication.Selection.MoveLeft();
             wordApplication.Selection.MoveLeft(); // 进入单元格内
             RemoveTailSpace();
-
-            // 删除每行前面的重复空格
-            string text = table.Cell(0, 0).Range.Text;
-            int spaceCount = int.MaxValue;
-            foreach (var line in text.Split('\n'))
-            {
-                int thisRowCount = 0;
-                foreach (var c in line)
-                {
-                    if (Regex.IsMatch(c.ToString(), @"\s"))
-                    {
-                        thisRowCount++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                spaceCount = Math.Min(spaceCount, thisRowCount);
-            }
-            if (spaceCount > 0)
-            {
-                table.Cell(0, 0).Range.Select();
-                wordApplication.Selection.MoveLeft();
-                do
-                {
-                    for (int i = 0; i < spaceCount; i++)
-                    {
-                        string s = wordApplication.Selection.Text;
-                        if (!@Regex.IsMatch(s, @"\r|\n"))
-                        {
-                            wordApplication.Selection.Delete();
-                        }
-                    }
-                } while (wordApplication.Selection.MoveDown() != 0);
-            }
-
-
+            
             // 设置表格底纹颜色
             table.Range.Shading.BackgroundPatternColor = (WdColor)0xf8f8f8;
-            //wordDocument.SaveAs2("d:\\test.docx");
+            wordDocument.SaveAs2("d:\\test.docx");
 
             //table.Range.Cut();
             var sentences = wordDocument.Sentences;
