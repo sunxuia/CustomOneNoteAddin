@@ -103,6 +103,9 @@ namespace OneNoteAddin.Handler
             wordRange.ParagraphFormat.LineSpacingRule = WdLineSpacing.wdLineSpaceSingle;
             wordRange.Font.Shading.Texture = WdTextureIndex.wdTextureNone;
 
+            var sentences = wordDocument.Sentences;
+            wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End);
+
             // 删除每行前面的重复空格
             string text = wordRange.Text;
             int spaceCount = int.MaxValue;
@@ -115,7 +118,10 @@ namespace OneNoteAddin.Handler
                     {
                         if (Regex.IsMatch(c.ToString(), @"\s"))
                         {
-                            thisRowSpaceCount++;
+                            if (c == ' ' || c == '\t')
+                            {
+                                thisRowSpaceCount++;
+                            }
                         }
                         else
                         {
@@ -141,7 +147,8 @@ namespace OneNoteAddin.Handler
                     }
                 } while (wordApplication.Selection.MoveDown() != 0);
             }
-            wordRange.Select();
+            sentences = wordDocument.Sentences;
+            wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End);
             wordRange.Cut();
 
             //把代码粘贴在一个表格单元格中
@@ -163,10 +170,10 @@ namespace OneNoteAddin.Handler
             
             // 设置表格底纹颜色
             table.Range.Shading.BackgroundPatternColor = (WdColor)0xf8f8f8;
-            wordDocument.SaveAs2("d:\\test.docx");
+            //wordDocument.SaveAs2("d:\\test.docx");
 
             //table.Range.Cut();
-            var sentences = wordDocument.Sentences;
+            sentences = wordDocument.Sentences;
             wordRange.SetRange(sentences[1].Start, sentences[sentences.Count].End);
             wordRange.Font.Size = 11;
             wordRange.Font.Name = "Consolas";
