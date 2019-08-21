@@ -113,9 +113,14 @@ namespace OneNoteAddin.Handler
                 }
                 else
                 {
+                    List<XElement> tElements = new List<XElement>();
                     foreach (var tElement in Descendants(element, "T"))
                     {
-                        SetHtml(element);
+                        tElements.Add(tElement);
+                    }
+                    foreach (var tElement in tElements)
+                    {
+                        SetHtml(tElement);
                     }
                 }
             }
