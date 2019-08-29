@@ -48,6 +48,7 @@
         </group>
         <group id="grpSetting" label="Setting">
           <button id="btnOpenSettingFile" imageMso="CurrentViewSettings" label="Open Setting File" size="large" onAction="OnOpenSettingFileClick" />
+          <button id="btnShowVSCode" label="Show/Hide VS Code" image="VSCode" size="large" onAction="OnShowVSCode" />
         </group>
       </tab>
     </tabs>

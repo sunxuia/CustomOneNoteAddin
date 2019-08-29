@@ -23,9 +23,9 @@ namespace OneNoteAddin
     /// </summary>
     public partial class Ribbon : IDTExtensibility2, IRibbonExtensibility
     {
-        WordHandler wordHandler = new WordHandler();
+        private WordHandler wordHandler = new WordHandler();
 
-        VSCodeHandler vsCodeHandler;
+        private VSCodeHandler vsCodeHandler;
 
         private string prevCodeStyle;
 
@@ -162,6 +162,15 @@ namespace OneNoteAddin
                     SendKeys.SendWait("^(v)");
                 }
             }
+        }
+
+        public void OnShowVSCode(IRibbonControl control)
+        {
+            if(!vsCodeHandler.IsInitialed)
+            {
+                return;
+            }
+            vsCodeHandler.ShowWindow(!vsCodeHandler.IsWindowVisible);
         }
 
         public void OnSetFontClick(IRibbonControl control)

@@ -68,11 +68,17 @@ namespace OneNoteAddin.Handler
                 } while (!windowHandler.SetWindow(
                     "Chrome_WidgetWin_1",
                     title + " - Visual Studio Code"));
+                IsInitialed = true;
             }
             catch (Exception err)
             {
                 MessageBox.Show("Error while start visual studio code : \n" + err.ToString());
             }
+        }
+
+        public bool IsInitialed
+        {
+            get; private set;
         }
 
         /// <summary>
@@ -98,6 +104,14 @@ namespace OneNoteAddin.Handler
             SendKeys.SendWait($"{codeStyle.ToUpper()}");
             Thread.Sleep(150);
             SendKeys.SendWait("\n");
+
+            Thread.Sleep(150);
+            string nowTitle = windowHandler.GetWindowTitle();
+            if (nowTitle.Contains("settings.json"))
+            {
+                SendKeys.SendWait("^(w)");
+                MessageBox.Show(codeStyle + " configuration not exist!");
+            }
 
             if (!isCapsPressed)
             {
@@ -140,7 +154,10 @@ namespace OneNoteAddin.Handler
             // 格式化
             SendKeys.SendWait("+%(f)");
             // 等待格式化
-            Thread.Sleep(300);
+            Thread.Sleep(150);
+            // 发送alt, 避免调出菜单的错误
+            SendKeys.SendWait("%");
+            Thread.Sleep(150);
             // 全选并剪切
             SendKeys.SendWait("^(ax)");
 
@@ -168,6 +185,7 @@ namespace OneNoteAddin.Handler
         /// 从剪切板粘贴然后保存, 然后编辑代码, 关闭后和保存的文件进行对比,
         /// 如果文件改变了就复制到剪切板中
         /// </summary>
+        /// <param name="codePath">code.exe 的路径</param>
         /// <param name="codePath">code.exe 的路径</param>
         /// <param name="newText">更改后的文本</param>
         /// <returns>文本是否被修改过</returns>
@@ -215,6 +233,30 @@ namespace OneNoteAddin.Handler
             {
                 text = err.ToString();
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 隐藏/ 显示vsc
+        /// </summary>
+        /// <param name="show">是否显示</param>
+        public void ShowWindow(bool show)
+        {
+            windowHandler.ShowWindow(show);
+            if (show)
+            {
+                windowHandler.ActiveWindow();
+            }
+        }
+
+        /// <summary>
+        /// 窗口是否是可见的
+        /// </summary>
+        public bool IsWindowVisible
+        {
+            get
+            {
+                return windowHandler.IsWindowVisible();
             }
         }
     }

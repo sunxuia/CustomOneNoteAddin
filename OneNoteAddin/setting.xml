@@ -2,7 +2,7 @@
 <setting>
   <codeStyles>
     <codeStyle label="original format" comment=""/>
-    <codeStyle label="plaintext" comment=""/>
+    <codeStyle label="plain text" comment=""/>
     <codeStyle label="csharp" comment="// " />
     <codeStyle label="cpp" comment="// " />
     <codeStyle label="css" comment="/*  */" />

@@ -90,6 +90,14 @@ namespace OneNoteAddin.Handler
             return Handle != IntPtr.Zero;
         }
 
+        public string GetWindowTitle()
+        {
+            StringBuilder sb = new StringBuilder(1024);
+            GetWindowTextA(ThisHandle, sb, 1024);
+            string windowTitle = Encoding.UTF8.GetString(Encoding.Unicode.GetBytes(sb.ToString()));
+            return windowTitle;
+        }
+
         public static bool IsCapsLockPressed()
         {
             return GetKeyState(20) == 1;
