@@ -155,8 +155,8 @@ namespace OneNoteAddin.Handler
             SendKeys.SendWait("+%(f)");
             // 等待格式化
             Thread.Sleep(150);
-            // 发送alt, 避免调出菜单的错误
-            SendKeys.SendWait("%");
+            // 发送esc, 避免因为没有语言配置造成上面的快捷键调出菜单的错误
+            SendKeys.SendWait("{ESC}");
             Thread.Sleep(150);
             // 全选并剪切
             SendKeys.SendWait("^(ax)");
