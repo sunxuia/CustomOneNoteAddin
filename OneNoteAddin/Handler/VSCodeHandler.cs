@@ -106,6 +106,10 @@ namespace OneNoteAddin.Handler
             SendKeys.SendWait("\n");
 
             Thread.Sleep(150);
+
+            // 发送esc 键, 防止出现不识别的语言导致命令窗一直存在
+            SendKeys.SendWait("{ESC}");
+
             string nowTitle = windowHandler.GetWindowTitle();
             if (nowTitle.Contains("settings.json"))
             {
@@ -154,10 +158,7 @@ namespace OneNoteAddin.Handler
             // 格式化
             SendKeys.SendWait("+%(f)");
             // 等待格式化
-            Thread.Sleep(150);
-            // 发送esc, 避免因为没有语言配置造成上面的快捷键调出菜单的错误
-            SendKeys.SendWait("{ESC}");
-            Thread.Sleep(150);
+            Thread.Sleep(300);
             // 全选并剪切
             SendKeys.SendWait("^(ax)");
 
