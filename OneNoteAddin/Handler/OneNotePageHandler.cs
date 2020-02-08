@@ -187,10 +187,25 @@ namespace OneNoteAddin.Handler
             try
             {
                 app.UpdatePageContent(doc.ToString(), DateTime.MinValue);
-            }catch(Exception err)
+            }
+            catch (Exception err)
             {
                 Forms.MessageBox.Show("Error while update page : " + err.ToString());
             }
+        }
+
+        public void SplitOEElement(XElement oeElement, int i)
+        {
+            int tElementsCount = oeElement.Elements().Count();
+            XElement newElement = XDocument.Parse(@"<one:OE selected='partial' xmlns:one='http://schemas.microsoft.com/office/onenote/2013/onenote'></one:OE>").Root;
+            for (XElement element = oeElement.Elements().ElementAt(i);
+                element != null;
+                element = element.NextNode as XElement)
+            {
+                element.Remove();
+                newElement.Add(element);
+            }
+            oeElement.AddAfterSelf(newElement);
         }
     }
 }

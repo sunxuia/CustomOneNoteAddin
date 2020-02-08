@@ -1,5 +1,6 @@
 ﻿using Extensibility;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.OneNote;
 using Microsoft.Office.Interop.Word;
 using OneNoteAddin.Handler;
 using OneNoteAddin.Setting;
@@ -166,7 +167,7 @@ namespace OneNoteAddin
 
         public void OnShowVSCode(IRibbonControl control)
         {
-            if(!vsCodeHandler.IsInitialed)
+            if (!vsCodeHandler.IsInitialed)
             {
                 return;
             }
@@ -285,6 +286,63 @@ namespace OneNoteAddin
             var process = new System.Diagnostics.Process();
             process.StartInfo.FileName = setting.FilePath;
             process.Start();
+        }
+
+        public void OnFixNbsp(IRibbonControl control)
+        {
+            string pageId = app.Windows.CurrentWindow.CurrentPageId;
+            string xml;
+            app.GetPageContent(pageId, out xml, PageInfo.piAll, XMLSchema.xsCurrent);
+            xml = xml.Replace("&nbsp;", " ");
+            app.UpdatePageContent(xml);
+        }
+
+        public void OnInsertCodeBox(IRibbonControl control)
+        {
+            OneNotePageHandler page = new OneNotePageHandler(app);
+            var tElement = page.GetCursorElement("T");
+            var oeElement = tElement.Parent;
+            if(oeElement.Name.LocalName != "OE")
+            {
+                MessageBox.Show("Cannot Insert Code Box here");
+                return;
+            }
+
+            var tableElement = XDocument.Parse(@"
+<one:OE selected='partial' xmlns:one='http://schemas.microsoft.com/office/onenote/2013/onenote'>
+    <one:Table bordersVisible='false' hasHeaderRow='false'>
+        <one:Columns>
+		    <one:Column index='0' width='37.11000061035156'/>
+	    </one:Columns>
+	    <one:Row>
+		    <one:Cell shadingColor='#F2F2F2'>
+			    <one:OEChildren selected='partial'>
+				    <one:OE alignment='left' quickStyleIndex='0' selected='partial' style='font-family:Microsoft YaHei Mono;font-size:11.0pt'>
+					    <one:T selected='all'><![CDATA[]]></one:T>
+                    </one:OE>
+			    </one:OEChildren>
+		    </one:Cell>
+	    </one:Row>
+    </one:Table>
+</one:OE>
+            ").Root;
+
+            int tElementsCount = oeElement.Elements().Count();
+            if (tElementsCount == 1)
+            {
+                oeElement.ReplaceWith(tableElement);
+            } else
+            {
+                int i = 0;
+                while (oeElement.Elements().ElementAt(i) != tElement)
+                {
+                    i++;
+                }
+                tElement.Remove();
+                page.SplitOEElement(oeElement, i);
+                oeElement.AddAfterSelf(tableElement);
+            }
+            page.Save();
         }
     }
 }

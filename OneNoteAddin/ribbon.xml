@@ -22,6 +22,8 @@
             <button id="btnInsertCode" imageMso="HtmlListCodeSnippets" label="Insert Code" onAction="OnInsertCode" />
             <button id="btnInsertCodeWoTable" imageMso="HtmlListCodeSnippets" label="Insert Code Part" onAction="OnInsertCodePart" />
             <button id="btnCopyWithWord" imageMso="FileSaveAsWord97_2003" label="Paste With Word" onAction="OnPasteWithWord" />
+            <button id="btnFixSpace" imageMso="HelpGettingStarted" label="Fix Page &amp;nbps;" onAction="OnFixNbsp" />
+            <button id="btnInsertCodeBox" imageMso="GroupTaskInsert" label="Insert Code Box" onAction="OnInsertCodeBox"  />
           </box>
         </group>
         <group id="grpFont" label="Font">
